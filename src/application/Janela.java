@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -34,6 +35,7 @@ public class Janela extends Stage {
 	VBox digitos = new VBox();
 	HBox hbx1 = new HBox(), hbx2 = new HBox(), hbx3 = new HBox(), hbx4 = new HBox(), hbx5 = new HBox();
 	Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnInv, btnConfere;
+	Button confirma = new Button("confirma");
 	Button btnConfirma = new Button("Confirma"), btnCorrige = new Button("Corrige"), btnBranco = new Button("Branco");
 	HBox hbxLbl1 = new HBox();
 	HBox hbxLbl2 = new HBox();
@@ -303,6 +305,10 @@ public class Janela extends Stage {
 			n2=0;
 		}
 		
+		confirma.setOnAction(e->{
+			new CheckingSystem();
+		});
+		
 		lbl1.textProperty().addListener((observable, oldValue, newValue) -> {
 		    try {
 			n1 = Integer.parseInt(lbl1.getText());
@@ -366,6 +372,12 @@ public class Janela extends Stage {
 		    }
 		});
 		
+		this.setOnCloseRequest(e->{
+			EntityManager em = BancoDeDados.criaGerenciador();
+			em.clear();
+			em.close();
+		});
+		
 		TextInputDialog dialog = new TextInputDialog("");
 		dialog.setTitle("Insira seu nome");
 		dialog.setHeaderText("Por favor, insira seu nome");
@@ -404,7 +416,9 @@ public class Janela extends Stage {
 		digitos.getChildren().addAll(hbx1, hbx2, hbx3, hbx4, hbx5);
 		digitos.setSpacing(15);
 
-		layout.getChildren().addAll(digitos,hbxOrg,candidato,lblName,lblPartido);
+		layout.getChildren().addAll(digitos,hbxOrg,candidato,lblName,lblPartido,confirma);
+		AnchorPane.setBottomAnchor(confirma, 2d);
+		AnchorPane.setLeftAnchor(confirma, 2d);
 		AnchorPane.setRightAnchor(digitos, 15d);
 		AnchorPane.setRightAnchor(hbxOrg, 750d);
 		AnchorPane.setRightAnchor(lblName, 750d);
@@ -433,6 +447,7 @@ public class Janela extends Stage {
 		
 	    return eleitor;
 	}
+	
 	
 	private void efetuarVoto(Voto v) {
 		EntityManager em = BancoDeDados.criaGerenciador();
