@@ -370,35 +370,21 @@ public class Janela extends Stage {
 		dialog.setTitle("Insira seu nome");
 		dialog.setHeaderText("Por favor, insira seu nome");
 		dialog.setContentText("Please enter your name:");
-		
-		
-		
+				
 		// Traditional way to get the response value.
 		Optional<String> result = dialog.showAndWait();
 		
-		result.ifPresent(name -> nomeEleitor = name);	
-		
-		
-		
-		
+		result.ifPresent(name -> nomeEleitor = name);
 		
 		this.btnConfirma.setOnAction(e->{
-			MessageDigest teste = null;
-			try {
-				teste = MessageDigest.getInstance("MD5");
-			} catch (NoSuchAlgorithmException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		    teste.update(nomeEleitor.getBytes(),0,nomeEleitor.length());
-		    this.eleitor = new BigInteger(1,teste.digest()).toString(16);
+			
 			
 			
 			Voto v = new Voto();
 			String nCandidato = lbl1.getText()+lbl2.getText();
 			
 			v.setCandidato(this.lblName.getText());
-			v.setEleitor(this.eleitor);
+			v.setEleitor(crypt(eleitor));
 			v.setnCandidato(Integer.parseInt(nCandidato));
 			
 			this.efetuarVoto(v);
@@ -433,6 +419,20 @@ public class Janela extends Stage {
 
 	}
 	
+	private String crypt(String name) {
+			
+		MessageDigest teste = null;
+		try {
+			teste = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    teste.update(nomeEleitor.getBytes(),0,nomeEleitor.length());
+	    this.eleitor = new BigInteger(1,teste.digest()).toString(16);
+		
+	    return eleitor;
+	}
 	
 	private void efetuarVoto(Voto v) {
 		EntityManager em = BancoDeDados.criaGerenciador();
