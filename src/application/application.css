@@ -1,0 +1,39 @@
+.button{
+	-fx-background-color:#000;
+	-fx-text-fill:#FFF;
+	-fx-font-size: 25;
+}
+
+#textbox{
+	-fx-font-size: 60;
+}
+.label{
+	-fx-font-size: 25;
+}
+#Confere{
+	-fx-background-color:blue;
+	-fx-text-fill:#FFF;
+	-fx-font-size: 20;
+}
+
+#Branco{
+	-fx-background-color:#FFF;
+	-fx-text-fill:#000;
+	-fx-font-size: 20;
+}
+
+#Corrige{
+	-fx-background-color:Red;
+	-fx-text-fill:#000;
+	-fx-font-size: 20;
+}
+#Confirma{
+	-fx-background-color:Green;
+	-fx-text-fill:#000;
+	-fx-font-size: 20;
+}
+
+#Numero{
+	-fx-border-style: solid;
+	-fx-border-color: black;
+}
