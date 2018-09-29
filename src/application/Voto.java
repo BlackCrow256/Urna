@@ -18,6 +18,19 @@ public class Voto {
 	
 	@Column
 	String eleitor;
+	
+	@Column
+	int nCandidato;
+	
+	
+	
+	public int getnCandidato() {
+		return nCandidato;
+	}
+
+	public void setnCandidato(int nCandidato) {
+		this.nCandidato = nCandidato;
+	}
 
 	public int getCod() {
 		return cod;

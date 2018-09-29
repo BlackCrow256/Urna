@@ -1,6 +1,9 @@
 package application;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -68,7 +71,8 @@ public class Janela extends Stage {
 	int cont=0;
 	int n1,n2;
 	private String nomeEleitor;
-	public Janela() {
+	private String eleitor;
+	public Janela() throws NoSuchAlgorithmException {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Error");
 		alert.setHeaderText("Operação inválida");
@@ -303,7 +307,7 @@ public class Janela extends Stage {
 		    try {
 			n1 = Integer.parseInt(lbl1.getText());
 		    }catch (Exception e) {
-				System.out.println("a");
+		    	
 			}
 		    
 		});
@@ -312,7 +316,7 @@ public class Janela extends Stage {
 			try {
 				n2 = Integer.parseInt(lbl2.getText());
 			    }catch (Exception e) {
-					System.out.println("a");
+					
 				}
 			    
 		    if(n1==1&&n2==7) {
@@ -362,11 +366,13 @@ public class Janela extends Stage {
 		    }
 		});
 		
-		TextInputDialog dialog = new TextInputDialog("walter");
+		TextInputDialog dialog = new TextInputDialog("");
 		dialog.setTitle("Insira seu nome");
 		dialog.setHeaderText("Por favor, insira seu nome");
 		dialog.setContentText("Please enter your name:");
-
+		
+		
+		
 		// Traditional way to get the response value.
 		Optional<String> result = dialog.showAndWait();
 		
@@ -374,10 +380,26 @@ public class Janela extends Stage {
 		
 		
 		
+		
+		
 		this.btnConfirma.setOnAction(e->{
+			MessageDigest teste = null;
+			try {
+				teste = MessageDigest.getInstance("MD5");
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    teste.update(nomeEleitor.getBytes(),0,nomeEleitor.length());
+		    this.eleitor = new BigInteger(1,teste.digest()).toString(16);
+			
+			
 			Voto v = new Voto();
+			String nCandidato = lbl1.getText()+lbl2.getText();
+			
 			v.setCandidato(this.lblName.getText());
-			v.setEleitor(this.nomeEleitor);
+			v.setEleitor(this.eleitor);
+			v.setnCandidato(Integer.parseInt(nCandidato));
 			
 			this.efetuarVoto(v);
 			
@@ -385,6 +407,9 @@ public class Janela extends Stage {
 			lbl1.setText(" ");
 			lbl2.setText(" ");
 			cont=0;
+			
+			
+			
 		});
 		
 		
